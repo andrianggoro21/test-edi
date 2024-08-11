@@ -71,9 +71,24 @@ const getUserAllQuery = async () => {
   }
 };
 
+const keepLoginQuery = async (id) => {
+  try {
+    const res = await User.findByPk(id, {
+      attributes: {
+        exclude: ["password"],
+      },
+    });
+
+    return res;
+  } catch (err) {
+    throw err;
+  }
+};
+
 module.exports = {
   getUserQuery,
   getRoleByIdQuery,
   registerUserQuery,
   getUserAllQuery,
+  keepLoginQuery,
 };

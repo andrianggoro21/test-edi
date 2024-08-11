@@ -1,0 +1,53 @@
+/* Register.css */
+.register-page {
+    background: linear-gradient(135deg, #e0c3fc, #8ec5fc); /* Calm gradient background */
+  }
+  
+  .register-card {
+    background-color: #f7f7f7;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 25rem;
+  }
+  
+  .card-title {
+    font-weight: bold;
+    font-size: 1.75rem;
+  }
+  
+  .custom-input {
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    padding: 0.5rem;
+    background-color: #fff;
+    color: #495057;
+  }
+  
+  .custom-input:focus {
+    border-color: #80bdff;
+    background-color: #e9ecef;
+    color: #495057;
+  }
+  
+  .custom-button {
+    background-color: #007bff;
+    border: none;
+    padding: 0.75rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+  
+  .custom-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .text-primary {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .text-primary:hover {
+    text-decoration: underline;
+  }
+  

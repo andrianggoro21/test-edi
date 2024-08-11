@@ -6,9 +6,8 @@ const {
 
 const createBiodataController = async (req, res) => {
   try {
-    const { user_id } = req.params;
     const biodata = req.body;
-    const result = await createBiodataService(user_id, biodata);
+    const result = await createBiodataService(biodata);
     return res.status(201).json({
       message: "biodata created successfully",
       data: result,
@@ -22,7 +21,8 @@ const createBiodataController = async (req, res) => {
 const getBiodataController = async (req, res) => {
   try {
     const { user_id } = req.params;
-    const result = await getBiodataService(user_id);
+    const { searchTerm } = req.query;
+    const result = await getBiodataService(user_id, searchTerm);
     return res.status(200).json({
       message: "get biodata successfully",
       data: result,

@@ -6,9 +6,9 @@ const {
 } = require("../queries/biodataQuery");
 const { getUserQuery } = require("../queries/userQuery");
 
-const createBiodataService = async (user_id, biodata) => {
+const createBiodataService = async (biodata) => {
   try {
-    const checkBiodata = await getBiodataByIdQuery(user_id);
+    const checkBiodata = await getBiodataByIdQuery(biodata.user_id);
     if (checkBiodata) {
       throw new Error("biodata already exist");
     }
@@ -19,7 +19,7 @@ const createBiodataService = async (user_id, biodata) => {
   }
 };
 
-const getBiodataService = async (user_id) => {
+const getBiodataService = async (user_id, searchTerm) => {
   try {
     const user = await getUserQuery({ id: user_id });
     if (!user) {
@@ -29,7 +29,7 @@ const getBiodataService = async (user_id) => {
       const res = await getBiodataByIdQuery(user.id);
       return res;
     } else if (user.role_id === 1) {
-      const res = await getBiodataAllQuery();
+      const res = await getBiodataAllQuery(searchTerm);
       return res;
     } else {
       throw new Error("Invalid role");

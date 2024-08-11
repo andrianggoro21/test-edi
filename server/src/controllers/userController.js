@@ -2,12 +2,13 @@ const {
   registerUserService,
   getAllUserService,
   loginUserService,
+  keepLoginService,
 } = require("../services/userService");
 
 const registerUserController = async (req, res) => {
   try {
-    const { email, password, role_id } = req.body;
-    const result = await registerUserService(email, password, role_id);
+    const { email, password } = req.body;
+    const result = await registerUserService(email, password, (role_id = 2));
     return res.status(201).json({
       message: "user created successfully",
       data: result,
@@ -45,8 +46,22 @@ const loginUserController = async (req, res) => {
   }
 };
 
+const keepLoginController = async (req, res) => {
+  try {
+    const { id } = req.user;
+    const result = await keepLoginService(id);
+    return res.status(200).json({
+      message: "Success",
+      data: result,
+    });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+
 module.exports = {
   registerUserController,
   getAllUserController,
   loginUserController,
+  keepLoginController,
 };
