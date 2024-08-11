@@ -4,8 +4,10 @@ const {
   registerUserController,
   getAllUserController,
   loginUserController,
+  keepLoginController,
 } = require("../controllers/userController");
 const validator = require("../middleware/validator.middleware");
+const verifyToken = require("../middleware/auth.middleware");
 
 const router = express.Router();
 
@@ -24,5 +26,6 @@ const validations = [
 router.post("/", validator(validations), registerUserController);
 router.get("/", getAllUserController);
 router.post("/login", loginUserController);
+router.get("/keeplogin", verifyToken, keepLoginController);
 
 module.exports = router;

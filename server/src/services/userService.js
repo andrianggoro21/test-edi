@@ -6,6 +6,7 @@ const {
   getUserQuery,
   getRoleByIdQuery,
   getUserAllQuery,
+  keepLoginQuery,
 } = require("../queries/userQuery");
 
 const registerUserService = async (email, password, role_id) => {
@@ -77,8 +78,21 @@ const loginUserService = async (email, password) => {
   }
 };
 
+const keepLoginService = async (id) => {
+  try {
+    const res = await keepLoginQuery(id);
+
+    if (!res) throw new Error("User doesnt exist");
+
+    return res;
+  } catch (err) {
+    throw err;
+  }
+};
+
 module.exports = {
   registerUserService,
   getAllUserService,
   loginUserService,
+  keepLoginService,
 };
