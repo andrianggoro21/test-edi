@@ -1,17 +1,42 @@
-import { useState } from 'react';
-import { Table, Button, Modal } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import { FaEdit, FaTrash } from 'react-icons/fa';
+import { useState, useEffect } from "react";
+import { Table, Button, Modal, Form } from "react-bootstrap";
+import { Link, useParams } from "react-router-dom";
+import { FaEdit, FaTrash } from "react-icons/fa";
+import { getBiodataList } from "../services/biodataListApi";
 
 const BiodataList = () => {
+  const { id } = useParams();
+  const [biodata, setBiodata] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
 
-  // Data biodata dummy, bisa diganti dengan data dari API
-  const biodata = [
-    { id: 1, name: 'John Doe', email: 'john@example.com' },
-    { id: 2, name: 'Jane Doe', email: 'jane@example.com' },
-  ];
+  useEffect(() => {
+    const getBiodata = async () => {
+      try {
+        const data = await getBiodataList(id, searchQuery);
+        const formattedBiodata = data.data.map(item => {
+            const date = new Date(item.tanggal_lahir);
+            const formattedDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${date.getFullYear()}`;
+  
+            return {
+              id: item.id,
+              nama: item.nama,
+              tempat_lahir: item.tempat_lahir,
+              tanggal_lahir: formattedDate,
+              posisi_yang_dilamar: item.posisi_yang_dilamar,
+              user_id: item.user_id
+            };
+          });
+
+        setBiodata(formattedBiodata);
+      } catch (error) {
+        alert(error.response.data.message);
+      }
+    };
+
+    getBiodata();
+  }, [id, searchQuery]);
 
   const handleDelete = (id) => {
     setDeleteId(id);
@@ -26,15 +51,24 @@ const BiodataList = () => {
 
   return (
     <div className="biodata-list-container">
-      <Button variant="primary" as={Link} to="/biodata/create" className="mb-3">
+      {/* <Button variant="primary" as={Link} to="/biodata/create" className="mb-3">
         Create Biodata
-      </Button>
+      </Button> */}
+      <Form.Control
+        type="text"
+        placeholder="Search by name"
+        className="mb-3"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
       <Table striped bordered hover>
         <thead>
           <tr>
             <th>ID</th>
-            <th>Name</th>
-            <th>Email</th>
+            <th>Nama</th>
+            <th>Tempat Lahir</th>
+            <th>Tanggal Lahir</th>
+            <th>Posisi yang Dilamar</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -42,20 +76,22 @@ const BiodataList = () => {
           {biodata.map((item) => (
             <tr key={item.id}>
               <td>{item.id}</td>
-              <td>{item.name}</td>
-              <td>{item.email}</td>
+              <td>{item.nama}</td>
+              <td>{item.tempat_lahir}</td>
+              <td>{item.tanggal_lahir}</td>
+              <td>{item.posisi_yang_dilamar}</td>
               <td>
                 <Button
                   variant="outline-primary"
                   as={Link}
-                  to={`/biodata/edit/${item.id}`}
+                  to={`/biodata/edit/${item.user_id}`}
                   className="me-2"
                 >
                   <FaEdit />
                 </Button>
                 <Button
                   variant="outline-danger"
-                  onClick={() => handleDelete(item.id)}
+                  onClick={() => handleDelete(item.user_id)}
                 >
                   <FaTrash />
                 </Button>
@@ -70,9 +106,7 @@ const BiodataList = () => {
         <Modal.Header closeButton>
           <Modal.Title>Konfirmasi Hapus</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          Apakah Anda yakin ingin menghapus biodata ini?
-        </Modal.Body>
+        <Modal.Body>Apakah Anda yakin ingin menghapus biodata ini?</Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowModal(false)}>
             Batal
@@ -87,4 +121,3 @@ const BiodataList = () => {
 };
 
 export default BiodataList;
-

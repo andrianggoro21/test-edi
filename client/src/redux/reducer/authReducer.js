@@ -46,7 +46,7 @@ export const login = (email, password, navigate) => {
       dispatch(setUser(response?.data?.data.user));
       dispatch(loginSuccess());
       alert("Login Success");
-      navigate("/");
+      navigate(`/dashboard/${response?.data?.data?.user?.id}`);
     } catch (error) {
       alert(error.response.data.message);
       console.log(error);

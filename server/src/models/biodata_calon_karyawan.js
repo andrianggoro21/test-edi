@@ -83,6 +83,7 @@ module.exports = (sequelize, Sequelize) => {
       BiodataCalonKaryawan.hasMany(models.riwayat_pelatihan, { foreignKey: "biodata_id" });
       BiodataCalonKaryawan.hasMany(models.riwayat_pekerjaan, { foreignKey: "biodata_id" });
       BiodataCalonKaryawan.hasMany(models.skill, { foreignKey: "biodata_id" });
+      BiodataCalonKaryawan.hasMany(models.orang_terdekat, { foreignKey: "biodata_id" });
     };
   
     return BiodataCalonKaryawan;
