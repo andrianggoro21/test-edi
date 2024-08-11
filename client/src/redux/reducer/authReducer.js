@@ -31,11 +31,13 @@ export const AuthReducer = createSlice({
   },
 });
 
+const API_URL = import.meta.env.VITE_REACT_API_BASE_URL;
+
 export const login = (email, password, navigate) => {
   return async (dispatch) => {
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/user/login",
+        `${API_URL}/user/login`,
         {
           email,
           password,
@@ -55,13 +57,15 @@ export const login = (email, password, navigate) => {
   };
 };
 
+
+
 export const keepLogin = () => {
   return async (dispatch) => {
     try {
       const token = localStorage.getItem("token");
       if (token) {
         const response = await axios.get(
-          "http://localhost:8080/api/user/keeplogin",
+          `${API_URL}/user/keeplogin`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

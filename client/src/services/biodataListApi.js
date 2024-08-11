@@ -1,8 +1,10 @@
 import axios from "axios";
 
+const API_URL = import.meta.env.VITE_REACT_API_BASE_URL;
+
 export const getBiodataList = async (id, searchTerm = '') => {
   try {
-    const response = await axios.get(`http://localhost:8080/api/biodata/${id}`, {
+    const response = await axios.get(`${API_URL}/biodata/${id}`, {
       params: {
         searchTerm,
       },

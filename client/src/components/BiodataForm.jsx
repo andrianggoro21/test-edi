@@ -5,6 +5,8 @@ import PropTypes from "prop-types";
 import { getBiodataList } from "../services/biodataListApi";
 import axios from "axios";
 
+const API_URL = import.meta.env.VITE_REACT_API_BASE_URL;
+
 const BiodataForm = ({ isEdit }) => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -39,17 +41,14 @@ const BiodataForm = ({ isEdit }) => {
       const submitData = isEdit ? formData : { ...formData, user_id: id };
       if (isEdit) {
         // Send PATCH request to update biodata
-        await axios.patch(
-          `http://localhost:8080/api/biodata/${id}`,
-          submitData
-        );
+        await axios.patch(`${API_URL}/biodata/${id}`, submitData);
         // console.log("Biodata updated:", { id, ...formData });
         alert("Biodata submitted successfully");
         await fetchBiodata();
       } else {
-        await axios.post("http://localhost:8080/api/biodata", submitData);
+        await axios.post(`${API_URL}/biodata`, submitData);
         alert("Biodata submitted successfully");
-        navigate(`/biodata/${id}`,{ state: { refresh: true } });
+        navigate(`/biodata/${id}`, { state: { refresh: true } });
       }
     } catch (error) {
       console.error("Error submitting biodata:", error);
@@ -234,7 +233,7 @@ const BiodataForm = ({ isEdit }) => {
                     type="email"
                     placeholder="Enter your email"
                     name="email"
-                    value={formData?.email || ''}
+                    value={formData?.user?.email}
                     onChange={handleChange}
                     required
                   />
