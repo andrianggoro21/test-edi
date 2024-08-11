@@ -8,9 +8,7 @@ const { getUserQuery } = require("../queries/userQuery");
 
 const createBiodataService = async (biodata) => {
   try {
-    console.log(biodata);
-    
-    const checkBiodata = await getBiodataByIdQuery(biodata.biodata.user_id);
+    const checkBiodata = await getBiodataByIdQuery(biodata.user_id);
     if (checkBiodata) {
       throw new Error("biodata already exist");
     }

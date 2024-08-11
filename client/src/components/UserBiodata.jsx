@@ -1,18 +1,25 @@
 import { useState, useEffect } from "react";
 import { Table, Container, Row, Col, Button } from "react-bootstrap";
 import { getBiodataList } from "../services/biodataListApi";
-import { useParams, Link, useLocation } from "react-router-dom";
+import { useParams, Link, useLocation, useNavigate } from "react-router-dom";
 
 const UserBiodata = () => {
   const { id } = useParams();
   const [biodata, setBiodata] = useState(null);
   const location = useLocation();
+  const navigate = useNavigate();
+  console.log("id", id);
 
   useEffect(() => {
     const fetchBiodata = async () => {
       try {
         const response = await getBiodataList(id);
-        const fetchedBiodata = response.data ;
+        const fetchedBiodata = response.data;
+
+        if (!fetchedBiodata) {
+          setBiodata(null);
+          return;
+        }
         const date = new Date(fetchedBiodata.tanggal_lahir);
         const formattedDate = `${String(date.getDate()).padStart(
           2,
@@ -34,13 +41,16 @@ const UserBiodata = () => {
     fetchBiodata();
   }, [id, location.state?.refresh]);
 
+  const handleCreateBiodata = () => {
+    navigate(`/biodata/create/${id}`);
+  };
+
   if (!biodata) {
     return (
       <div>
         <Button
           variant="primary"
-          as={Link}
-          to={`/biodata/create/${id}`}
+          onClick={handleCreateBiodata}
           className="mb-3"
         >
           Create Biodata
@@ -53,7 +63,7 @@ const UserBiodata = () => {
     <Container>
       <Row className="justify-content-center">
         <Col md={10}>
-        <Button
+          <Button
             variant="primary"
             as={Link}
             to={`/biodata/edit/${biodata.user_id}`}
